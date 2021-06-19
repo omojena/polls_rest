@@ -7,10 +7,10 @@ authors = ["osmel <osmel.dubet@gmail.com>"]
 [tool.poetry.dependencies]
 python = "^3.8"
 djangorestframework = "3.12.4"
-djangorestframework-jwt = "1.11.0"
 django-cors-headers = "2.5.3"
 psycopg2 = "^2.9.1"
 drf-yasg = "^1.20.0"
+djangorestframework-simplejwt = "^4.7.1"
 
 [tool.poetry.dev-dependencies]
 
