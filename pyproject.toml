@@ -1,0 +1,19 @@
+[tool.poetry]
+name = "polls_rest"
+version = "0.1.0"
+description = "System Polls"
+authors = ["osmel <osmel.dubet@gmail.com>"]
+
+[tool.poetry.dependencies]
+python = "^3.8"
+djangorestframework = "3.12.4"
+djangorestframework-jwt = "1.11.0"
+django-cors-headers = "2.5.3"
+psycopg2 = "^2.9.1"
+drf-yasg = "^1.20.0"
+
+[tool.poetry.dev-dependencies]
+
+[build-system]
+requires = ["poetry-core>=1.0.0"]
+build-backend = "poetry.core.masonry.api"
