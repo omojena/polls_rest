@@ -18,12 +18,11 @@ from django.urls import path, include
 from rest_framework import permissions
 from drf_yasg.views import get_schema_view
 from drf_yasg import openapi
-from rest_framework_simplejwt.views import (
-    TokenObtainPairView,
-    TokenRefreshView,
-)
+from rest_framework import routers
 
-from api.viewsets.security import RegisterView, LoginAPIView
+from api.viewsets import poll
+from api.viewsets import security
+from api.viewsets import user
 
 schema_view = get_schema_view(
     openapi.Info(
@@ -37,11 +36,23 @@ schema_view = get_schema_view(
     public=True,
     permission_classes=(permissions.AllowAny,),
 )
-
+router = routers.DefaultRouter()
+router.register(r'poll', poll.PollViewSet)
+router.register(r'user', user.UserViewSet)
 urlpatterns = [
+    path('', schema_view.with_ui('swagger', cache_timeout=0), name='schema-swagger-ui'),
     path('admin/', admin.site.urls),
-    path('api/swagger/', schema_view.with_ui('swagger', cache_timeout=0), name='schema-swagger-ui'),
     path('api/redoc/', schema_view.with_ui('redoc', cache_timeout=0), name='schema-redoc'),
-    path('api/register/', RegisterView.as_view(), name="register"),
-    path('api/login/', LoginAPIView.as_view(), name="login"),
+    path('api/', include(router.urls)),
+    path('api/poll/change/active/', poll.ChangeIsActive.as_view()),
+    path('api/poll/vote/', poll.VotePoll.as_view()),
+
+    path('api/user/change/active/', user.ChangeIsActive.as_view()),
+    path('api/user/change/type/', user.ChangeUserType.as_view()),
+
+    path('api/user/change/password/admin', security.ChangePasswordAdminView.as_view(), name="change_password_admin"),
+    path('api/user/change/password/', security.ChangePasswordView.as_view(), name="change_password"),
+
+    path('api/register/', security.RegisterView.as_view(), name="register"),
+    path('api/login/', security.LoginAPIView.as_view(), name="login"),
 ]
