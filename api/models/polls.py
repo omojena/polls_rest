@@ -1,3 +1,5 @@
+from api.models.options_poll import OptionsPoll
+
 try:
     from django.db.models import JSONField
 
@@ -13,3 +15,7 @@ class Polls(models.Model):
     created_at = models.DateTimeField(auto_now_add=True)
     updated_at = models.DateTimeField(auto_now=True)
     user_votes = models.ManyToManyField('User', blank=True, related_name='User_Votes')
+
+    @property
+    def options(self):
+        return OptionsPoll.objects.filter(fk_poll=self.id)

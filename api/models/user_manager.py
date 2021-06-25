@@ -1,3 +1,4 @@
+from api.utils import SUPER_ADMIN
 from django.contrib.auth.base_user import BaseUserManager
 
 
@@ -18,6 +19,7 @@ class UserManager(BaseUserManager):
 
         user = self.create_user(username, password)
         user.is_superuser = True
+        user.userType = SUPER_ADMIN
         user.is_staff = True
         user.save()
         return user

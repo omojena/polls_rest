@@ -43,7 +43,6 @@ class ChangeIsActive(APIView):
 
 
 class VotePoll(APIView):
-    # permission_classes = IsAuthenticated
 
     def post(self, request, *args, **kwargs):
         try:
