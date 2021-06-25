@@ -1,4 +1,6 @@
+from rest_framework import status
 from rest_framework.permissions import BasePermission
+from rest_framework.response import Response
 
 from api.models.polls import Polls
 
@@ -11,9 +13,13 @@ def calculate_percentage(votes, total):
     return votes * 100 / total
 
 
-def valid_vote(user_id, poll_id):
-    poll_votes = Polls.objects.get(id=poll_id).user_votes_set.all()
-    return bool(user_id in poll_votes)
+def valid_vote(user, poll_id):
+    try:
+        poll = Polls.objects.get(id=poll_id)
+        votes_list = poll.user_votes.all()
+        return bool(user in votes_list)
+    except Polls.DoesNotExist as e:
+        return Response({"message": str(e)}, status=status.HTTP_500_INTERNAL_SERVER_ERROR)
 
 
 class CanChangeUser(BasePermission):

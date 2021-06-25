@@ -23,6 +23,7 @@ from rest_framework import routers
 from api.viewsets import poll
 from api.viewsets import security
 from api.viewsets import user
+from api.viewsets import poll_options
 
 schema_view = get_schema_view(
     openapi.Info(
@@ -38,15 +39,15 @@ schema_view = get_schema_view(
 )
 router = routers.DefaultRouter()
 router.register(r'poll', poll.PollViewSet)
+router.register(r'poll_options', poll_options.PollOptionsViewSet)
 router.register(r'user', user.UserViewSet)
 urlpatterns = [
     path('', schema_view.with_ui('swagger', cache_timeout=0), name='schema-swagger-ui'),
     path('admin/', admin.site.urls),
     path('api/redoc/', schema_view.with_ui('redoc', cache_timeout=0), name='schema-redoc'),
-    path('api/', include(router.urls)),
     path('api/poll/change/active/', poll.ChangeIsActive.as_view()),
     path('api/poll/vote/', poll.VotePoll.as_view()),
-
+    path('api/', include(router.urls)),
     path('api/user/change/active/', user.ChangeIsActive.as_view()),
     path('api/user/change/type/', user.ChangeUserType.as_view()),
 

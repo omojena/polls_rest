@@ -43,13 +43,13 @@ class ChangeIsActive(APIView):
 
 
 class VotePoll(APIView):
-    permission_classes = IsAuthenticated
+    # permission_classes = IsAuthenticated
 
     def post(self, request, *args, **kwargs):
         try:
             data = request.data
             poll_id = data.get('id')
-            if valid_vote(request.user.id, poll_id):
+            if valid_vote(request.user, poll_id):
                 return Response({"message": "User already voted in this poll"}, status=status.HTTP_406_NOT_ACCEPTABLE)
             option_id = data.get('option')
             poll = Polls.objects.get(id=poll_id)
