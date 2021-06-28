@@ -1,0 +1,39 @@
+version: '3'
+
+services:
+  db:
+    image: postgres
+    healthcheck:
+      test: psql -U ${DB_HOST_USER} -d ${DB_NAME} -c "Select * from api_user" || exit 1
+      interval: 10s
+      timeout: 10s
+      retries: 100
+    env_file:
+      - ./.env
+    restart: unless-stopped
+    ports:
+      - "${DB_PORT}:5432"
+    volumes:
+      - pgdata:/var/lib/postgresql/data
+  api:
+    build: .
+    container_name: polls_rest
+    command: python manage.py runserver 0.0.0.0:8000
+    env_file:
+      - ./.env
+    volumes:
+      - .:/code
+    ports:
+      - "${API_PORT_EXT}:8000"
+    depends_on:
+      - db
+  nginx:
+    build: ./nginx
+    container_name: nginx
+    ports:
+      - 80:80
+    depends_on:
+      - api
+
+volumes:
+  pgdata:
