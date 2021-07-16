@@ -11,7 +11,7 @@ from api import utils
 class UserViewSet(viewsets.ModelViewSet):
     queryset = User.objects.all()
     serializer_class = UserSerializer
-    permission_classes = (IsAuthenticated, utils.CanChangeUser,)
+    # permission_classes = (IsAuthenticated, utils.CanChangeUser,)
 
 
 class ChangeIsActive(APIView):

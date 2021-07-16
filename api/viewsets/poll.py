@@ -12,7 +12,7 @@ from api.utils import calculate_percentage, CanChangePoll, valid_vote
 class PollViewSet(viewsets.ModelViewSet):
     queryset = Polls.objects.all()
     serializer_class = PollSerializer
-    permission_classes = (IsAuthenticated, CanChangePoll)
+    # permission_classes = (IsAuthenticated, CanChangePoll)
 
     def get_serializer_class(self):
         if self.action == 'list':
@@ -21,7 +21,7 @@ class PollViewSet(viewsets.ModelViewSet):
 
 
 class ChangeIsActive(APIView):
-    permission_classes = (IsAuthenticated, CanChangePoll)
+    # permission_classes = (IsAuthenticated, CanChangePoll)
 
     def post(self, request, *args, **kwargs):
         try:
